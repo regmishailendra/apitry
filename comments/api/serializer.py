@@ -1,12 +1,12 @@
+from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from comments.models import CommentsModel
 
 
 class CommentsListSerializer(ModelSerializer):
     user = SerializerMethodField()
-
     class Meta:
         model = CommentsModel
         fields = ['content', 'updated', 'created', 'story', 'user']
@@ -15,10 +15,26 @@ class CommentsListSerializer(ModelSerializer):
         return obj.user.get_full_name()
 
 
+
 class CommentCreateSerializer(ModelSerializer):
+
+    story_id= serializers.IntegerField()
+
     class Meta:
         model = CommentsModel
-        fields = ['content', 'story']
+        fields = ['content', 'story_id']
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

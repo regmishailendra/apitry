@@ -7,6 +7,7 @@ urlpatterns=[
     url('create',CommentCreateAPIView.as_view()),
 
 
+
 ]
 
 
