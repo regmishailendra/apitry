@@ -1,6 +1,8 @@
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from comments.api.serializer import CommentsListSerializer, CommentCreateSerializer
@@ -10,11 +12,35 @@ from story.models import StoryModel
 
 class CommentsListAPIView(ListAPIView):
     queryset = CommentsModel.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = CommentsListSerializer
+
+
+
+    def get_queryset(self):
+
+        query=self.request.GET.get('q')
+        if query:
+            print(query)
+            queryset=CommentsModel.objects.filter(
+                Q(content__icontains=query)  |
+                Q(user__first_name__icontains=query)
+            )
+
+            return queryset
+        else:
+            return CommentsModel.objects.all()
+
+
+
+
+
+
 
 
 class CommentCreateAPIView(CreateAPIView):
     serializer_class = CommentCreateSerializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

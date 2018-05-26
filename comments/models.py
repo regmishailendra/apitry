@@ -12,6 +12,5 @@ class CommentsModel(models.Model):
     created = models.DateTimeField(auto_now=True, auto_now_add=False)
     story = models.ForeignKey(StoryModel,related_name='comments', on_delete=models.CASCADE)
 
-
     def __str__(self):
         return self.content
