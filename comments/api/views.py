@@ -12,7 +12,7 @@ from story.models import StoryModel
 
 class CommentsListAPIView(ListAPIView):
     queryset = CommentsModel.objects.all()
-    permission_classes = [IsAuthenticated]
+
     serializer_class = CommentsListSerializer
 
 

@@ -24,5 +24,6 @@ urlpatterns = [
     url('story/', include('story.api.urls')),
     url('comments/', include('comments.api.urls')),
     url('api/docs',get_swagger_view(title='my api')),
+    url('auth/',include('auth.api.urls')),
 
 ]
