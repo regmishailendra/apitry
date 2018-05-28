@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,6 +15,7 @@ class RegisterApiView(CreateAPIView):
 
 class LoginApiView(APIView):
     serializer_class = UserLoginSerializer
+    permission_classes = [AllowAny]
 
     def post(self,request):
         data=request.data

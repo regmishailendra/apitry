@@ -1,9 +1,11 @@
+import requests
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
+from rest_framework.utils import json
 
 from comments.api import serializer
 
@@ -63,5 +65,11 @@ class UserLoginSerializer(ModelSerializer):
               if not user_obj.check_password(password):
                   raise ValidationError("Incorrect credentials please try again")
 
-          attrs["token"]="Some random token"
+
+
+         #get token using post
+          post_data=[('username',username),('password',password)]
+          result=requests.post('http://127.0.0.1:8000/auth/token',data=post_data)
+          content=json.loads(result.text)
+          attrs["token"]=content['token']
           return attrs
