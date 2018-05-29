@@ -11,9 +11,10 @@ from comments.api import serializer
 
 
 class UserCreateSerializer(ModelSerializer):
+    token=serializers.CharField(read_only=True)
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password','token']
         extra_kwargs = {"password": {
             "write_only": True
         }}
@@ -26,8 +27,15 @@ class UserCreateSerializer(ModelSerializer):
         user=User(username=username,email=email)
         user.set_password(password)
         user.save()
+        validated_data['token']=getToken(username,password)
         return validated_data
 
+
+def getToken(username,password):
+    post_data = [('username', username), ('password', password)]
+    result = requests.post('http://127.0.0.1:8000/auth/token', data=post_data)
+    content = json.loads(result.text)
+    return content['token']
 
 
 class UserLoginSerializer(ModelSerializer):
@@ -65,11 +73,5 @@ class UserLoginSerializer(ModelSerializer):
               if not user_obj.check_password(password):
                   raise ValidationError("Incorrect credentials please try again")
 
-
-
-         #get token using post
-          post_data=[('username',username),('password',password)]
-          result=requests.post('http://127.0.0.1:8000/auth/token',data=post_data)
-          content=json.loads(result.text)
-          attrs["token"]=content['token']
+          attrs["token"]=getToken(username,password)
           return attrs

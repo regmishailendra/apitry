@@ -9,6 +9,7 @@ from auth.api.serializers import UserCreateSerializer, UserLoginSerializer
 
 class RegisterApiView(CreateAPIView):
     serializer_class = UserCreateSerializer
+    permission_classes = [AllowAny]
 
 
 
