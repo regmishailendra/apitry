@@ -9,4 +9,5 @@ urlpatterns=[
     url('(?P<pk>\d+)/detail',StoryDetailAPIView.as_view()),
 
     url(r'^create',StoryCreateAPIView.as_view()),
+
 ]

@@ -1,7 +1,6 @@
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
-
 from story.api.serializers import StoryListSerializer, StoryDetailSerializer, StoryCreateSerializer
 from story.models import StoryModel
 
